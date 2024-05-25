@@ -1,0 +1,9 @@
+﻿  Renderer.cpp
+C:\Users\변재현\Desktop\그래픽스\OPENGL24-1\Kinect_Sample_Re\Renderer.cpp(36,24): warning C4244: '=': 'GLuint'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\변재현\Desktop\그래픽스\OPENGL24-1\Kinect_Sample_Re\Renderer.cpp(441,19): warning C4244: '=': 'double'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\변재현\Desktop\그래픽스\OPENGL24-1\Kinect_Sample_Re\Renderer.cpp(442,19): warning C4244: '=': 'double'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\변재현\Desktop\그래픽스\OPENGL24-1\Kinect_Sample_Re\Renderer.cpp(443,19): warning C4244: '=': 'double'에서 'GLfloat'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\변재현\Desktop\그래픽스\OPENGL24-1\Kinect_Sample_Re\Renderer.cpp(446,12): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\변재현\Desktop\그래픽스\OPENGL24-1\Kinect_Sample_Re\Renderer.cpp(447,12): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\변재현\Desktop\그래픽스\OPENGL24-1\Kinect_Sample_Re\Renderer.cpp(448,12): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Kinect_Sample_Re.vcxproj -> C:\Users\변재현\Desktop\그래픽스\OPENGL24-1\x64\Debug\gltest.exe
