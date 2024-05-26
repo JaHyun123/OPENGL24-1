@@ -346,12 +346,16 @@ void InitializeWindow(int argc, char* argv[])
 	glutMotionFunc(motion);
 	glutMouseFunc(mouse);
 	glutCloseFunc(close);
+	//GLuint image = load   ("./my_texture.bmp");
+
+	//glBindTexture(1,)
 
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 
 	// bind textures
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
+
 	reshape(1000, 1000);
 
 	/*glGenTextures(1, &dispBindIndex);
@@ -363,96 +367,214 @@ void InitializeWindow(int argc, char* argv[])
 
 void display()
 {
-	// clear buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	// set matrix
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(60, 1, 0.1, 200);
-
 	glTranslatef(t[0], t[1], t[2] - 1.0f);
 	glScalef(1, 1, 1);
-
 	GLfloat m[4][4], m1[4][4];
 	build_rotmatrix(m, quat);
+	gluLookAt(0, 2.0, 2.0, 0, 0, 0, 0, 1.0, 0);
 
-	glMatrixMode(GL_PROJECTION);
-	// Draw Model Points ///////////
 	GLfloat r, g, b;
-
-
-	// labtest 1
-	
-	//trcon = trcon - 1;
-	//glRotatef(trcon, 0.0, 1.0, 0.0);
-	//glTranslatef(trcon/50.0,0,0);
-	
-
-	// labtest 2
-	
-	if (trflag == 0)
-	{
-		trcon = trcon + 1;
-	}
-	else
-	{
-		trcon = trcon - 1;
-	}
-
-	if (trcon > 10)
-	{
-		trflag = 1;
-	}
-	else if (trcon < -10)
-	{
-		trflag = 0;
-	}
-	
-
-	float cosval = cosf(trcon / 50.0);
-	float sinval = sinf(trcon / 50.0);
-
-	m1[0][0] = cosval;
-	m1[0][1] = 0 - sinval;
-	m1[0][2] = 0.0f;
-	m1[0][3] = 0.0f;
-
-	m1[1][0] = sinval;
-	m1[1][1] = cosval;
-	m1[1][2] = 0.0f;
-	m1[1][3] = 0.0f;
-
-	m1[2][0] = 0.0f;
-	m1[2][1] = 0.0f;
-	m1[2][2] = 1.0f;
-	m1[2][3] = 0.0f;
-
-	m1[3][0] = 0.0f;
-	m1[3][1] = 0.0f;
-	m1[3][2] = 0.0f;
-	m1[3][3] = 1.0f;
-
 	glMultMatrixf(&m[0][0]);
 
 
-	glPointSize(3);
-	glBegin(GL_POINTS);
-	float fill_int;
-	float xx1, yy1, zz1;
-	for (register int j = 0; j < 100000; j = j + 1)
-	{
-		fill_int = (vertex[j].Z - zmin) / (zmax - zmin);
-		glColor3f(1 - fill_int, 1 - fill_int, 1 - fill_int);
-		glVertex3f(vertex[j].X, vertex[j].Y, vertex[j].Z);
+	// test #1
 
-		glColor3f(1 - fill_int, 1 - fill_int, 1 - fill_int);
-		xx1 = m1[0][0] * (vertex[j].X - 0.3) + m1[0][1] * vertex[j].Y + m1[0][2] * vertex[j].Z;
-		yy1 = m1[1][0] * (vertex[j].X - 0.3) + m1[1][1] * vertex[j].Y + m1[1][2] * vertex[j].Z;
-		zz1 = m1[2][0] * (vertex[j].X - 0.3) + m1[2][1] * vertex[j].Y + m1[2][2] * vertex[j].Z;
-		glVertex3f(xx1, yy1, zz1);
-	}
+	glEnable(GL_LIGHTING);
+
+	glEnable(GL_LIGHT0);
+	GLfloat diffuse0[4] = { 0.8, 0.8, 0.8, 1.0 };
+	GLfloat ambient0[4] = { 0.9, 0.5, 0.5, 1.0 };
+	GLfloat specular0[4] = { 0.4, 0.4, 0.4, 1.0 };
+	GLfloat light0_pos[4] = { 2.0, 2.0, 2.0, 1.0 };
+	//GLfloat light0_pos[4] = { 0.3, 0.3, 0.5, 1.0 };
+	//GLfloat spot_dir[3] = { -2.0f, 0.0f, -1.0f };
+
+	glEnable(GL_LIGHT1);
+	GLfloat diffuse1[4] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat ambient1[4] = { 0.1, 0.1, 0.1, 1.0 };
+	GLfloat specular1[4] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light1_pos[4] = { -2.0, 2.0, 2.0, 1.0 };
+
+
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient0);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse0);
+	glLightfv(GL_LIGHT0, GL_POSITION, light0_pos);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specular0);
+	//glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_dir);
+	//glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 50.0);
+	//glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 1.0);
+
+	//glLightfv(GL_LIGHT1, GL_POSITION, light1_pos);
+	//glLightfv(GL_LIGHT1, GL_AMBIENT, ambient1);
+	//glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse1);
+	//glLightfv(GL_LIGHT1, GL_SPECULAR, specular1);
+
+
+
+	// test #2
+
+	//glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.2);
+	//glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.1);
+	//glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.05);
+
+
+	// test #3
+
+	//glShadeModel(GL_SMOOTH);
+	//glShadeModel(GL_FLAT);
+
+
+	// test #4
+	//빨간색 플라스틱과 유사한 재질을 다음과 같이 정의
+	//GLfloat mat_ambient[4] = { 0.3f, 0.0f, 0.0f, 1.0f };
+	//GLfloat mat_diffuse[4] = { 0.6f, 0.0f, 0.0f, 1.0f };
+	//GLfloat mat_specular[4] = { 0.9f, 0.9f, 0.9f, 1.0f };
+	//GLfloat mat_shininess = 128.0;
+	//
+	//// 폴리곤의 앞면의 재질을 설정 
+	//glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+	//glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+	//glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+	//glMaterialf(GL_FRONT, GL_SHININESS, mat_shininess);
+
+
+
+
+	glutSolidTeapot(1.0);
+
+	// test #5
+	/*
+	glBegin(GL_QUADS);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(-0.2, -0.2, -0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(-0.2, 0.2, -0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(0.2, 0.2, -0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(0.2, -0.2, -0.2);
+
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(-0.2, -0.2, 0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(-0.2, 0.2, 0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(0.2, 0.2, 0.2);
+	glColor3f(0.4, 0.4, 0.4);;
+	glVertex3f(0.2, -0.2, 0.2);
+
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(-0.2, -0.2, -0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(-0.2, -0.2, 0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(-0.2, 0.2, 0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(-0.2, 0.2, -0.2);
+
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(0.2, -0.2, -0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(0.2, -0.2, 0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(0.2, 0.2, 0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(0.2, 0.2, -0.2);
+
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(-0.2, -0.2, -0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(-0.2, -0.2, 0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(0.2, -0.2, 0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(0.2, -0.2, -0.2);
+
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(-0.2, 0.2, -0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(-0.2, 0.2, 0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(0.2, 0.2, 0.2);
+	glColor3f(0.4, 0.4, 0.4);
+	glVertex3f(0.2, 0.2, -0.2);
 
 	glEnd();
+
+
+
+	// test #6
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 512, 512, 0, GL_RGB, GL_UNSIGNED_BYTE, mytexels);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+
+	glEnable(GL_TEXTURE_2D);
+	glBegin(GL_QUADS);
+	glTexCoord2d(0.0, 0.0);
+	glVertex3f(-0.2, -0.2, -0.2);
+	glTexCoord2d(1.0, 0.0);
+	glVertex3f(-0.2, 0.2, -0.2);
+	glTexCoord2d(1.0, 1.0);
+	glVertex3f(0.2, 0.2, -0.2);
+	glTexCoord2d(0.0, 1.0);
+	glVertex3f(0.2, -0.2, -0.2);
+
+	glTexCoord2d(0.0, 0.0);
+	glVertex3f(-0.2, -0.2, 0.2);
+	glTexCoord2d(1.0, 0.0);
+	glVertex3f(-0.2, 0.2, 0.2);
+	glTexCoord2d(1.0, 1.0);
+	glVertex3f(0.2, 0.2, 0.2);
+	glTexCoord2d(0.0, 1.0);
+	glVertex3f(0.2, -0.2, 0.2);
+
+	glTexCoord2d(0.0, 0.0);
+	glVertex3f(-0.2, -0.2, -0.2);
+	glTexCoord2d(1.0, 0.0);
+	glVertex3f(-0.2, -0.2, 0.2);
+	glTexCoord2d(1.0, 1.0);
+	glVertex3f(-0.2, 0.2, 0.2);
+	glTexCoord2d(0.0, 1.0);
+	glVertex3f(-0.2, 0.2, -0.2);
+
+	glTexCoord2d(0.0, 0.0);
+	glVertex3f(0.2, -0.2, -0.2);
+	glTexCoord2d(1.0, 0.0);
+	glVertex3f(0.2, -0.2, 0.2);
+	glTexCoord2d(1.0, 1.0);
+	glVertex3f(0.2, 0.2, 0.2);
+	glTexCoord2d(0.0, 1.0);
+	glVertex3f(0.2, 0.2, -0.2);
+
+	glTexCoord2d(0.0, 0.0);
+	glVertex3f(-0.2, -0.2, -0.2);
+	glTexCoord2d(1.0, 0.0);
+	glVertex3f(-0.2, -0.2, 0.2);
+	glTexCoord2d(1.0, 1.0);
+	glVertex3f(0.2, -0.2, 0.2);
+	glTexCoord2d(0.0, 1.0);
+	glVertex3f(0.2, -0.2, -0.2);
+
+	glTexCoord2d(0.0, 0.0);
+	glVertex3f(-0.2, 0.2, -0.2);
+	glTexCoord2d(1.0, 0.0);
+	glVertex3f(-0.2, 0.2, 0.2);
+	glTexCoord2d(1.0, 1.0);
+	glVertex3f(0.2, 0.2, 0.2);
+	glTexCoord2d(0.0, 1.0);
+	glVertex3f(0.2, 0.2, -0.2);
+
+	glEnd();
+	*/
+
 	glutSwapBuffers();
 }
 
@@ -462,30 +584,27 @@ int main(int argc, char* argv[])
 	vertex_color = new Vertex[100000];
 	//mymesh = new Meshmodel[100000];
 
-	FILE* fp;
-	fp = fopen("mymodel.obj", "r");
-	int count = 0;
-	int num = 0;
-	char ch;
-	float x, y, z;
+	int i, j, k = 0;
+	FILE* f = fopen("mymap3.bmp", "rb");
+	unsigned char info[54];
+	fread(info, sizeof(unsigned char), 54, f); // read the 54-byte header
+	// extract image height and width from header
+	int width = *(int*)&info[18];
+	int height = *(int*)&info[22];
 
-	for (register int j = 0; j < 100000; j = j + 1)
-	{
-		count = fscanf(fp, "%c %f %f %f \n", &ch, &x, &y, &z);
-		if (count == 4 && ch == 'v')
+	int size = 3 * width * height;
+	unsigned char* data = new unsigned char[size]; // allocate 3 bytes per pixel
+	fread(data, sizeof(unsigned char), size, f); // read the rest of the data at once
+	fclose(f);
+	for (i = 0; i < width; i++)
+		for (j = 0; j < height; j++)
 		{
-			vertex[j].X = x / scale;
-			vertex[j].Y = y / scale;
-			vertex[j].Z = z / scale;
-			if (vertex[j].Z < zmin)
-				zmin = vertex[j].Z;
-			if (vertex[j].Z > zmax)
-				zmax = vertex[j].Z;
+			mytexels[j][i][0] = data[k * 3 + 2];
+			mytexels[j][i][1] = data[k * 3 + 1];
+			mytexels[j][i][2] = data[k * 3];
+			k++;
 		}
 
-	}
-
-	fclose(fp);
 
 	InitializeWindow(argc, argv);
 
